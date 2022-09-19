@@ -1,6 +1,7 @@
 package com.cortes.p2p.data.DTO;
 
 
+import com.cortes.p2p.data.models.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,5 @@ public class UserDTO {
     private String username;
 
     private List<String> interestList = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 }

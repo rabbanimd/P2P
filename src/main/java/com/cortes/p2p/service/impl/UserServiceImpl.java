@@ -2,6 +2,7 @@ package com.cortes.p2p.service.impl;
 
 import com.cortes.p2p.Resolve.exceptions.ResourceAlreadyExistException;
 import com.cortes.p2p.Resolve.exceptions.ResourceNotFoundException;
+import com.cortes.p2p.data.DTO.InterestListDTO;
 import com.cortes.p2p.data.DTO.UserDTO;
 import com.cortes.p2p.data.models.Interest;
 import com.cortes.p2p.data.models.User;
@@ -57,6 +58,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user","id", userId));
+    }
+
+    @Override
+    public UserDTO addInterests(Long userId, InterestListDTO interestListDTO) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user","id", userId));
+        for(String interestName : interestListDTO.getInterests()) {
+            Interest interest = interestService.getInterest(interestName.toUpperCase());
+            if(user.getInterests().contains(interest)) {
+                // already exists
+                continue;
+            }
+            user.getInterests().add(interest);
+            interest.setTotalUsers(interest.getTotalUsers() + 1);
+        }
+        return userToUserDto(userRepository.save(user));
     }
 
     private UserDTO userToUserDto(User user) {

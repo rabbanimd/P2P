@@ -1,5 +1,6 @@
 package com.cortes.p2p.controllers;
 
+import com.cortes.p2p.data.DTO.InterestListDTO;
 import com.cortes.p2p.data.DTO.UserDTO;
 import com.cortes.p2p.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,9 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity createNewUser(@Valid @RequestBody UserDTO userDTO) {
         return new ResponseEntity(userService.createUser(userDTO), HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}/addInterest")
+    public ResponseEntity addInterest(@PathVariable("id") Long userId, @RequestBody InterestListDTO interestListDTO) {
+        return new ResponseEntity(userService.addInterests(userId, interestListDTO), HttpStatus.OK);
     }
 }

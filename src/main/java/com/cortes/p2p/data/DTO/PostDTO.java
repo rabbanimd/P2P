@@ -19,4 +19,5 @@ public class PostDTO {
     private String description;
     private String imageLink;
     private List<String> interestList = new ArrayList<>();
+    private User author;
 }
