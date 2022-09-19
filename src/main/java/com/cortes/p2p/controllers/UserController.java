@@ -25,4 +25,8 @@ public class UserController {
     public ResponseEntity addInterest(@PathVariable("id") Long userId, @RequestBody InterestListDTO interestListDTO) {
         return new ResponseEntity(userService.addInterests(userId, interestListDTO), HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity getUser(@PathVariable("id") Long userId) {
+        return new ResponseEntity(userService.fetchUser(userId), HttpStatus.OK);
+    }
 }

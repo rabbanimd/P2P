@@ -45,10 +45,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public UserDTO getUser(Long userId) {
-        return null;
-    }
 
     @Override
     public void deleteUser(Long userId) {
@@ -73,6 +69,11 @@ public class UserServiceImpl implements UserService {
             interest.setTotalUsers(interest.getTotalUsers() + 1);
         }
         return userToUserDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO fetchUser(Long userId) {
+        return userToUserDto(getUserById(userId));
     }
 
     private UserDTO userToUserDto(User user) {
