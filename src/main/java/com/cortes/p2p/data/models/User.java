@@ -23,7 +23,9 @@ public class User {
 
     private String name;
     private String username;
-
+    @Column(columnDefinition = "tinyint(1) default 0")
+    private boolean isAuthorized;
+    private String email;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -40,5 +42,8 @@ public class User {
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
 
-
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.ALL}
+    )
+    private UserCredentials userCredentials;
 }

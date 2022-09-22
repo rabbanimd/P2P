@@ -6,8 +6,6 @@ import com.cortes.p2p.data.models.User;
 import com.cortes.p2p.data.payload.Author;
 
 public interface UserService {
-    Author createUser(UserDTO userDTO);
-
     Author updateUser(UserDTO userDTO);
 
     void deleteUser(Long userId);
