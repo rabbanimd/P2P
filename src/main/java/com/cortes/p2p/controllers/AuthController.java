@@ -2,7 +2,6 @@ package com.cortes.p2p.controllers;
 
 import com.cortes.p2p.data.DTO.SignupDTO;
 import com.cortes.p2p.service.AuthService;
-import com.cortes.p2p.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

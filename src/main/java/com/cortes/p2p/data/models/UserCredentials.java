@@ -11,7 +11,7 @@ import java.time.Instant;
 /**
  * class UserCredentials :
  * All user data will be stored here for backend use.
- *   =>  for personalisation filter
+ * =>  for personalisation filter
  */
 
 @Getter

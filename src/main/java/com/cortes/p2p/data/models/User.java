@@ -43,7 +43,7 @@ public class User {
     private Set<Post> posts = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY,
-        cascade = {CascadeType.ALL}
+            cascade = {CascadeType.ALL}
     )
     private UserCredentials userCredentials;
 }

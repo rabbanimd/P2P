@@ -9,6 +9,7 @@ public class Generator {
     public static String generateUserAuthToken() {
         return UUID.randomUUID().toString();
     }
+
     public static String generateUserPasswordHash(String password) {
         return getEncoder().encode(password);
     }

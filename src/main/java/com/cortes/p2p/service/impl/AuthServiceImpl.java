@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Author registerUser(SignupDTO signupDTO) {
         User user;
-        if(validate(signupDTO)) {
+        if (validate(signupDTO)) {
 //            persist user
             user = new User();
             user.setName(signupDTO.getFullName());
@@ -49,11 +49,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public HttpStatus verifyToken(String userToken) {
         UserCredentials cred = authRepository.findByAuthToken(userToken);
-        if(cred == null) {
-            throw new ResourceNotFoundException("Token","token",userToken);
+        if (cred == null) {
+            throw new ResourceNotFoundException("Token", "token", userToken);
         }
 //        check if expired
-        if(TimeHelper.isTokenValid(cred.getExpireAt())) {
+        if (TimeHelper.isTokenValid(cred.getExpireAt())) {
 //            set authorize true
             User user = cred.getUser();
             user.setAuthorized(true);
@@ -69,12 +69,12 @@ public class AuthServiceImpl implements AuthService {
          */
         User user;
         user = userRepository.findByUsername(signupDTO.getEmail());
-        if(user != null) {
-            throw new ResourceAlreadyExistException("user","username",signupDTO.getUsername());
+        if (user != null) {
+            throw new ResourceAlreadyExistException("user", "username", signupDTO.getUsername());
         }
         user = userRepository.findByEmail(signupDTO.getEmail());
-        if(user != null) {
-            throw new ResourceAlreadyExistException("user","email",signupDTO.getEmail());
+        if (user != null) {
+            throw new ResourceAlreadyExistException("user", "email", signupDTO.getEmail());
         }
         return true;
     }

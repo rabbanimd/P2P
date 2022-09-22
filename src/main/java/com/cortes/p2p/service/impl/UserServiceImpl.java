@@ -1,6 +1,5 @@
 package com.cortes.p2p.service.impl;
 
-import com.cortes.p2p.Resolve.exceptions.ResourceAlreadyExistException;
 import com.cortes.p2p.Resolve.exceptions.ResourceNotFoundException;
 import com.cortes.p2p.data.DTO.InterestListDTO;
 import com.cortes.p2p.data.DTO.UserDTO;
