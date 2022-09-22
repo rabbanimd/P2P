@@ -12,8 +12,6 @@ import com.cortes.p2p.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -37,24 +35,24 @@ public class PostServiceImpl implements PostService {
         post.setImageLink(postDTO.getImageLink());
         post.setPostStatus(postDTO.getPostStatus());
         post.setAuthor(user);
-        for(String interestName : postDTO.getInterestList()) {
-            Interest interest = interestService.getInterest(interestName);
-            interest.incrementTotalPosts();
-            post.getInterests().add(interest);
+        if (postDTO.getInterestList().size() == 0) {
+            /**
+             * post is sent to be created without interest list
+             * post interest = user interest
+             */
+            for (Interest interest : user.getInterests()) {
+                interest.incrementTotalPosts();
+                post.getInterests().add(interest);
+            }
+        } else {
+            for (String interestName : postDTO.getInterestList()) {
+                Interest interest = interestService.getInterest(interestName);
+                interest.incrementTotalPosts();
+                post.getInterests().add(interest);
+            }
         }
         user.getPosts().add(post);
         userRepository.save(user);
-        return postToPostDto(postRepository.save(post), user);
-    }
-
-    private PostDTO postToPostDto(Post post, User user) {
-        PostDTO postDTO = new PostDTO();
-        postDTO.setPostId(post.getPostId());
-        postDTO.setDescription(post.getDescription());
-        postDTO.setImageLink(post.getImageLink());
-        postDTO.setPostStatus(post.getPostStatus());
-        postDTO.setAuthor(user);
-        postDTO.setInterestList(post.getInterests().stream().map(interest -> interest.getName()).collect(Collectors.toList()));
-        return postDTO;
+        return Mapper.postToPostDTO(postRepository.save(post), user);
     }
 }

@@ -49,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Global Exception :
-            * If application throws any exception except from above-mentioned exceptions
+     * If application throws any exception except from above-mentioned exceptions
      * then Global exception handler will handle, and it will return Error message;
      */
     @ExceptionHandler(Exception.class)
