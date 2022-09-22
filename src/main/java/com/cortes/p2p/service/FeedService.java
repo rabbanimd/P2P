@@ -5,5 +5,6 @@ import com.cortes.p2p.data.payload.FeedPageResponse;
 
 public interface FeedService {
     FeedPageResponse getFeedsWithInterestList(InterestListDTO interestListDTO);
+
     FeedPageResponse getFeedsWithUserId(Long userId);
 }

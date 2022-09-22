@@ -1,7 +1,6 @@
 package com.cortes.p2p.data.DTO;
 
 
-import com.cortes.p2p.data.models.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

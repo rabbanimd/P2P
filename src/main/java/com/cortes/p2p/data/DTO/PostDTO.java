@@ -1,7 +1,6 @@
 package com.cortes.p2p.data.DTO;
 
 import com.cortes.p2p.data.common.PostStatus;
-import com.cortes.p2p.data.models.User;
 import com.cortes.p2p.data.payload.Author;
 import lombok.AllArgsConstructor;
 import lombok.Data;
