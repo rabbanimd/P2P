@@ -37,10 +37,21 @@ public class PostServiceImpl implements PostService {
         post.setImageLink(postDTO.getImageLink());
         post.setPostStatus(postDTO.getPostStatus());
         post.setAuthor(user);
-        for(String interestName : postDTO.getInterestList()) {
-            Interest interest = interestService.getInterest(interestName);
-            interest.incrementTotalPosts();
-            post.getInterests().add(interest);
+        if(postDTO.getInterestList().size() == 0) {
+            /**
+             * post is sent to be created without interest list
+             * post interest = user interest
+             */
+            for(Interest interest : user.getInterests()) {
+                interest.incrementTotalPosts();
+                post.getInterests().add(interest);
+            }
+        }else {
+            for(String interestName : postDTO.getInterestList()) {
+                Interest interest = interestService.getInterest(interestName);
+                interest.incrementTotalPosts();
+                post.getInterests().add(interest);
+            }
         }
         user.getPosts().add(post);
         userRepository.save(user);
