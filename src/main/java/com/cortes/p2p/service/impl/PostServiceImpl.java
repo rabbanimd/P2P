@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
         post.setAuthor(user);
         for(String interestName : postDTO.getInterestList()) {
             Interest interest = interestService.getInterest(interestName);
-            interest.setTotalPosts(interest.getTotalPosts() + 1);
+            interest.incrementTotalPosts();
             post.getInterests().add(interest);
         }
         user.getPosts().add(post);

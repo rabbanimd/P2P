@@ -40,4 +40,5 @@ public class Post {
             inverseJoinColumns = {@JoinColumn(name = "interest_id")}
     )
     private Set<Interest> interests = new HashSet<>();
+
 }

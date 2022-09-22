@@ -23,6 +23,13 @@ public class Interest {
     private Long totalUsers;
     @Column(columnDefinition = "BIGINT default 0")
     private Long totalPosts;
+    @Column(columnDefinition = "BIGINT default 0")
+    private Long upvotes;
+    @Column(columnDefinition = "BIGINT default 0")
+    private Long downvotes;
+
+    @Column(columnDefinition = "BIGINT default 0")
+    private Long reports;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -46,5 +53,19 @@ public class Interest {
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
 
-
+    public void incrementTotalPosts() {
+        this.totalPosts++;
+    }
+    public void incrementTotalUsers() {
+        this.totalUsers++;
+    }
+    public void incrementUpvotes() {
+        this.upvotes++;
+    }
+    public void incrementDownvotes() {
+        this.downvotes++;
+    }
+    public void incrementReports() {
+        this.reports++;
+    }
 }

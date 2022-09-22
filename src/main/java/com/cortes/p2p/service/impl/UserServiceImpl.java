@@ -34,8 +34,9 @@ public class UserServiceImpl implements UserService {
         user.setName(userDTO.getName());
         for(String interestName : userDTO.getInterestList()) {
             Interest interest = interestService.getInterest(interestName);
-            interest.setTotalUsers(interest.getTotalUsers()+1);
+            interest.incrementTotalUsers();
             user.getInterests().add(interest);
+
         }
         return userToUserDto(userRepository.save(user));
     }
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 continue;
             }
             user.getInterests().add(interest);
-            interest.setTotalUsers(interest.getTotalUsers() + 1);
+            interest.incrementTotalUsers();
         }
         return userToUserDto(userRepository.save(user));
     }
