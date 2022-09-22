@@ -35,6 +35,7 @@ public class PostServiceImpl implements PostService {
         Post post = new Post();
         post.setDescription(postDTO.getDescription());
         post.setImageLink(postDTO.getImageLink());
+        post.setPostStatus(postDTO.getPostStatus());
         post.setAuthor(user);
         for(String interestName : postDTO.getInterestList()) {
             Interest interest = interestService.getInterest(interestName);
@@ -51,6 +52,7 @@ public class PostServiceImpl implements PostService {
         postDTO.setPostId(post.getPostId());
         postDTO.setDescription(post.getDescription());
         postDTO.setImageLink(post.getImageLink());
+        postDTO.setPostStatus(post.getPostStatus());
         postDTO.setAuthor(user);
         postDTO.setInterestList(post.getInterests().stream().map(interest -> interest.getName()).collect(Collectors.toList()));
         return postDTO;
