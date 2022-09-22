@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/api/v1/posts")
+@RequestMapping(value = "/api/v1/post")
 public class PostController {
 
     @Autowired
