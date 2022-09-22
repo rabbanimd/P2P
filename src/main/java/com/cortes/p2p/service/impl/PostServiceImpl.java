@@ -55,17 +55,6 @@ public class PostServiceImpl implements PostService {
         }
         user.getPosts().add(post);
         userRepository.save(user);
-        return postToPostDto(postRepository.save(post), user);
-    }
-
-    private PostDTO postToPostDto(Post post, User user) {
-        PostDTO postDTO = new PostDTO();
-        postDTO.setPostId(post.getPostId());
-        postDTO.setDescription(post.getDescription());
-        postDTO.setImageLink(post.getImageLink());
-        postDTO.setPostStatus(post.getPostStatus());
-        postDTO.setAuthor(user);
-        postDTO.setInterestList(post.getInterests().stream().map(interest -> interest.getName()).collect(Collectors.toList()));
-        return postDTO;
+        return Mapper.postToPostDTO(postRepository.save(post), user);
     }
 }

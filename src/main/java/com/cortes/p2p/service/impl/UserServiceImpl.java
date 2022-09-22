@@ -6,6 +6,7 @@ import com.cortes.p2p.data.DTO.InterestListDTO;
 import com.cortes.p2p.data.DTO.UserDTO;
 import com.cortes.p2p.data.models.Interest;
 import com.cortes.p2p.data.models.User;
+import com.cortes.p2p.data.payload.Author;
 import com.cortes.p2p.repo.UserRepository;
 import com.cortes.p2p.service.InterestService;
 import com.cortes.p2p.service.UserService;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private InterestService interestService;
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
+    public Author createUser(UserDTO userDTO) {
         User user;
         user = userRepository.findByUsername(userDTO.getUsername());
         if(user != null)
@@ -36,13 +37,12 @@ public class UserServiceImpl implements UserService {
             Interest interest = interestService.getInterest(interestName);
             interest.incrementTotalUsers();
             user.getInterests().add(interest);
-
         }
-        return userToUserDto(userRepository.save(user));
+        return Mapper.userToAuthor(userRepository.save(user));
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
+    public Author updateUser(UserDTO userDTO) {
         return null;
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO addInterests(Long userId, InterestListDTO interestListDTO) {
+    public Author addInterests(Long userId, InterestListDTO interestListDTO) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user","id", userId));
         for(String interestName : interestListDTO.getInterests()) {
             Interest interest = interestService.getInterest(interestName.toUpperCase());
@@ -69,20 +69,13 @@ public class UserServiceImpl implements UserService {
             user.getInterests().add(interest);
             interest.incrementTotalUsers();
         }
-        return userToUserDto(userRepository.save(user));
+        return Mapper.userToAuthor(userRepository.save(user));
     }
 
     @Override
-    public UserDTO fetchUser(Long userId) {
-        return userToUserDto(getUserById(userId));
+    public Author fetchUser(Long userId) {
+        return Mapper.userToAuthor(getUserById(userId));
     }
 
-    private UserDTO userToUserDto(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(user.getUserId());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setName(user.getName());
-        userDTO.setInterestList(user.getInterests().stream().map(interest -> interest.getName()).collect(Collectors.toList()));
-        return userDTO;
-    }
+
 }

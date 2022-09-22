@@ -43,6 +43,9 @@ public class Interest {
         this.name = name;
         this.totalPosts = 0L;
         this.totalUsers = 0L;
+        this.reports = 0L;
+        this.upvotes = 0L;
+        this.downvotes = 0L;
     }
 
     @ManyToMany(fetch = FetchType.LAZY,

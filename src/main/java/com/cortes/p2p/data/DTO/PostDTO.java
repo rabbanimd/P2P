@@ -2,6 +2,7 @@ package com.cortes.p2p.data.DTO;
 
 import com.cortes.p2p.data.common.PostStatus;
 import com.cortes.p2p.data.models.User;
+import com.cortes.p2p.data.payload.Author;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,5 @@ public class PostDTO {
     @NotEmpty(message = "must provide project status")
     private PostStatus postStatus;
     private List<String> interestList = new ArrayList<>();
-    private User author;
+    private Author author;
 }
