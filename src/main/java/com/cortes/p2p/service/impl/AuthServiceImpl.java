@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
          */
         User user;
         user = userRepository.findByUsername(signupDTO.getEmail());
-        if (user != null) {
+        if (user != null) { 
             throw new ResourceAlreadyExistException("user", "username", signupDTO.getUsername());
         }
         user = userRepository.findByEmail(signupDTO.getEmail());
