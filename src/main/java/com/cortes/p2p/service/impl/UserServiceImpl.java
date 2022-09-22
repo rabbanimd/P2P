@@ -20,24 +20,24 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private InterestService interestService;
 
-    @Override
-    public Author createUser(UserDTO userDTO) {
-        User user;
-        user = userRepository.findByUsername(userDTO.getUsername());
-        if (user != null)
-            throw new ResourceAlreadyExistException("User", "Username", userDTO.getUsername());
-
-//        persist user
-        user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setName(userDTO.getName());
-        for (String interestName : userDTO.getInterestList()) {
-            Interest interest = interestService.getInterest(interestName);
-            interest.incrementTotalUsers();
-            user.getInterests().add(interest);
-        }
-        return Mapper.userToAuthor(userRepository.save(user));
-    }
+//    @Override
+//    public Author createUser(UserDTO userDTO) {
+//        User user;
+//        user = userRepository.findByUsername(userDTO.getUsername());
+//        if (user != null)
+//            throw new ResourceAlreadyExistException("User", "Username", userDTO.getUsername());
+//
+////        persist user
+//        user = new User();
+//        user.setUsername(userDTO.getUsername());
+//        user.setName(userDTO.getName());
+//        for (String interestName : userDTO.getInterestList()) {
+//            Interest interest = interestService.getInterest(interestName);
+//            interest.incrementTotalUsers();
+//            user.getInterests().add(interest);
+//        }
+//        return Mapper.userToAuthor(userRepository.save(user));
+//    }
 
     @Override
     public Author updateUser(UserDTO userDTO) {

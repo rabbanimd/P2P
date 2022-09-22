@@ -18,5 +18,6 @@ public class UserDTO {
     private String name;
     @NotEmpty(message = "username cannot be empty or null !")
     private String username;
+
     private List<String> interestList = new ArrayList<>();
 }

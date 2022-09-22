@@ -17,11 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create")
-    public ResponseEntity createNewUser(@Valid @RequestBody UserDTO userDTO) {
-        return new ResponseEntity(userService.createUser(userDTO), HttpStatus.CREATED);
-    }
-
     @PutMapping("/{id}/addInterest")
     public ResponseEntity addInterest(@PathVariable("id") Long userId, @RequestBody InterestListDTO interestListDTO) {
         return new ResponseEntity(userService.addInterests(userId, interestListDTO), HttpStatus.OK);
