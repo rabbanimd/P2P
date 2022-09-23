@@ -1,8 +1,10 @@
 package com.cortes.p2p.data.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.annotations.Fetch;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,15 +23,17 @@ public class User {
 
     private String name;
     private String username;
-
+    @Column(columnDefinition = "tinyint(1) default 0")
+    private boolean isAuthorized;
+    private String email;
     @ManyToMany(fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-                CascadeType.MERGE
-        }
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
     )
     @JoinTable(name = "users_interests",
-        joinColumns = {@JoinColumn(name = "user_id")},
+            joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "interest_id")}
     )
     private Set<Interest> interests = new HashSet<>();
@@ -38,5 +42,8 @@ public class User {
     @JsonIgnore
     private Set<Post> posts = new HashSet<>();
 
-
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.ALL}
+    )
+    private UserCredentials userCredentials;
 }

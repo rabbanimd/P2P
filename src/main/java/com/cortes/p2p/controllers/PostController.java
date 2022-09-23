@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/api/v1/posts")
+@RequestMapping(value = "/api/v1/post")
 public class PostController {
 
     @Autowired
     private PostService postService;
 
     @PostMapping("/{id}/create")
-    public ResponseEntity createPost(@PathVariable("id") Long userId,@Valid @RequestBody PostDTO postDTO) {
+    public ResponseEntity createPost(@PathVariable("id") Long userId, @Valid @RequestBody PostDTO postDTO) {
         return new ResponseEntity(postService.createPost(userId, postDTO), HttpStatus.CREATED);
     }
 }

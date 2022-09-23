@@ -1,6 +1,6 @@
 package com.cortes.p2p.data.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cortes.p2p.data.common.PostStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +21,13 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(columnDefinition="LONGTEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     private String imageLink;
+
+    @Enumerated(EnumType.ORDINAL)
+    private PostStatus postStatus;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User author = new User();

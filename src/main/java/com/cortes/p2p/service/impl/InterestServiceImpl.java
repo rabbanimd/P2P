@@ -22,7 +22,7 @@ public class InterestServiceImpl implements InterestService {
         Interest interest;
 
         interest = interestRepository.findByName(interestName);
-        if(interest==null) {
+        if (interest == null) {
 //            interest does not exists
             return createInterest(interestName);
         }
