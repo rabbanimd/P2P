@@ -1,6 +1,7 @@
 package com.cortes.p2p.controllers;
 
 import com.cortes.p2p.data.DTO.SignupDTO;
+import com.cortes.p2p.data.payload.Author;
 import com.cortes.p2p.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,15 @@ public class AuthController {
     @PutMapping("/authenticate/{token}")
     public ResponseEntity authorizeUser(@PathVariable("token") String userToken) {
         return new ResponseEntity(authService.verifyToken(userToken));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity loginUser(@RequestParam("username") String username,
+                                    @RequestParam("password") String password) {
+        Author author = authService.loginUser(username, password);
+        if (author == null) {
+            return new ResponseEntity<>("Login failed", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(author, HttpStatus.OK);
     }
 }

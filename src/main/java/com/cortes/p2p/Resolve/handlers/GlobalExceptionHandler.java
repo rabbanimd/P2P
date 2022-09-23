@@ -1,5 +1,6 @@
 package com.cortes.p2p.Resolve.handlers;
 
+import com.cortes.p2p.Resolve.exceptions.InvalidUserDataException;
 import com.cortes.p2p.Resolve.exceptions.ResourceAlreadyExistException;
 import com.cortes.p2p.Resolve.exceptions.ResourceNotFoundException;
 import com.cortes.p2p.data.payload.ErrorDetails;
@@ -45,6 +46,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             error.put(((FieldError) e).getField(), e.getDefaultMessage());
         });
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidUserDataException.class)
+    public ResponseEntity<ErrorDetails> handleInvalidUserDataException(InvalidUserDataException invalidUserDataException
+            , WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(),
+                invalidUserDataException.getMessage(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     /**
