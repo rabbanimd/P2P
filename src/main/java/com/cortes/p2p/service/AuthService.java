@@ -8,4 +8,6 @@ public interface AuthService {
     Author registerUser(SignupDTO signupDTO);
 
     HttpStatus verifyToken(String userToken);
+
+    Author loginUser(String username, String password);
 }

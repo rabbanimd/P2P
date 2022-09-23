@@ -74,6 +74,31 @@ public class AuthServiceImpl implements AuthService {
         return HttpStatus.NOT_ACCEPTABLE;
     }
 
+    /**
+     * loginUser(String username, String password)
+     * username contains '@' => email
+     * otherwise username.
+     *
+     * @return Author
+     */
+    @Override
+    public Author loginUser(String username, String password) {
+        User user;
+        if (username.contains("@")) {
+            user = userRepository.findByEmail(username);
+            if (user == null) {
+                return null;
+            }
+            return Mapper.userToAuthor(user);
+        } else {
+            user = userRepository.findByUsername(username);
+        }
+        if (user.getUserCredentials().equals(Generator.generateUserPasswordHash(password))) {
+            return Mapper.userToAuthor(user);
+        }
+        return null;
+    }
+
     private boolean validate(SignupDTO signupDTO) {
         /**
          * check uniqueness of email and username
