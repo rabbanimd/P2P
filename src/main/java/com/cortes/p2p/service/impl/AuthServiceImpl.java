@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
@@ -50,7 +52,8 @@ public class AuthServiceImpl implements AuthService {
                         signupDTO.getFullName(),
                         cred.getAuthToken());
             } catch (Exception e) {
-                throw new InvalidUserDataException("email"/*field*/, signupDTO.getEmail());
+                throw new InvalidUserDataException("email"/*field*/, signupDTO.getEmail()
+                        /*FieldValue*/);
             }
             return Mapper.userToAuthor(persistedUser);
         }
@@ -97,6 +100,61 @@ public class AuthServiceImpl implements AuthService {
             return Mapper.userToAuthor(user);
         }
         return null;
+    }
+
+    @Override
+    public void regenerateAuthToken(Long userId) {
+        User user =
+                userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(
+                        "user", "id", userId));
+        UserCredentials cred = user.getUserCredentials();
+        if(!TimeHelper.isTokenValid(user.getUserCredentials().getExpireAt())) {
+            cred.setAuthToken(Generator.generateUserAuthToken());
+            cred.setExpireAt(TimeHelper.getUserAuthTokenExpireAt());
+            user.setUserCredentials(cred);
+            userRepository.save(user);
+        }
+
+        Mailer mailer = new Mailer();
+        try {
+            mailer.sendVerificationEmail(user.getEmail(),
+                    user.getName(),
+                    cred.getAuthToken());
+        } catch (Exception e) {
+            throw new InvalidUserDataException("email"/*field*/, user.getEmail()
+                    /*FieldValue*/);
+        }
+
+    }
+
+    /**
+     * protocol :
+     * We will verify first email
+     * if old email is verified : we keep old email
+     *
+     * @param userId
+     * @param newEmail
+     */
+    @Override
+    public void updateEmail(Long userId, String newEmail) {
+        User user =
+                userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(
+                        "user", "id", userId));
+
+        Mailer mailer = new Mailer();
+        try {
+            mailer.sendVerificationEmail(user.getEmail(),
+                    user.getName(),
+                    user.getUserCredentials().getAuthToken());
+        } catch (Exception e) {
+            throw new InvalidUserDataException("email"/*field*/, user.getEmail()
+                    /*FieldValue*/);
+        }
+        user.setEmail(newEmail);
+        if(user.isAuthorized()) {
+            user.setAuthorized(false);
+        }
+        userRepository.save(user);
     }
 
     private boolean validate(SignupDTO signupDTO) {
