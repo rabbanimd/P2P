@@ -45,11 +45,11 @@ public class AuthServiceImpl implements AuthService {
              */
 
             Mailer mailer = new Mailer();
-            try{
+            try {
                 mailer.sendVerificationEmail(signupDTO.getEmail(),
                         signupDTO.getFullName(),
                         cred.getAuthToken());
-            }catch (Exception e) {
+            } catch (Exception e) {
                 throw new InvalidUserDataException("email"/*field*/, signupDTO.getEmail());
             }
             return Mapper.userToAuthor(persistedUser);
