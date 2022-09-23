@@ -13,7 +13,8 @@ public class Mapper {
     protected static Author userToAuthor(User user) {
         Author author = new Author(user.getUserId(),
                 user.getName(),
-                user.getUsername()
+                user.getUsername(),
+                user.isAuthorized()
         );
         author.setInterestList(user.getInterests().stream().map(interest -> interest.getName()).collect(Collectors.toList()));
         return author;

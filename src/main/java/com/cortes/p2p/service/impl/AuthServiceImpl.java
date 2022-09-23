@@ -1,5 +1,6 @@
 package com.cortes.p2p.service.impl;
 
+import com.cortes.p2p.Resolve.exceptions.InvalidUserDataException;
 import com.cortes.p2p.Resolve.exceptions.ResourceAlreadyExistException;
 import com.cortes.p2p.Resolve.exceptions.ResourceNotFoundException;
 import com.cortes.p2p.data.DTO.SignupDTO;
@@ -9,6 +10,7 @@ import com.cortes.p2p.data.payload.Author;
 import com.cortes.p2p.repo.AuthRepository;
 import com.cortes.p2p.repo.UserRepository;
 import com.cortes.p2p.service.AuthService;
+import com.cortes.p2p.service.helper.Mailer;
 import com.cortes.p2p.utils.Generator;
 import com.cortes.p2p.utils.TimeHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,15 @@ public class AuthServiceImpl implements AuthService {
             /**
              * impliment async api for email authentication
              */
+
+            Mailer mailer = new Mailer();
+            try{
+                mailer.sendVerificationEmail(signupDTO.getEmail(),
+                        signupDTO.getFullName(),
+                        cred.getAuthToken());
+            }catch (Exception e) {
+                throw new InvalidUserDataException("email"/*field*/, signupDTO.getEmail());
+            }
             return Mapper.userToAuthor(persistedUser);
         }
         return null;
@@ -69,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
          */
         User user;
         user = userRepository.findByUsername(signupDTO.getEmail());
-        if (user != null) { 
+        if (user != null) {
             throw new ResourceAlreadyExistException("user", "username", signupDTO.getUsername());
         }
         user = userRepository.findByEmail(signupDTO.getEmail());
