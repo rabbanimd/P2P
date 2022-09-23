@@ -10,4 +10,8 @@ public interface AuthService {
     HttpStatus verifyToken(String userToken);
 
     Author loginUser(String username, String password);
+
+    void regenerateAuthToken(Long userId);
+
+    void updateEmail(Long userId, String newEmail);
 }

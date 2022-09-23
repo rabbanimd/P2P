@@ -35,4 +35,17 @@ public class AuthController {
         }
         return new ResponseEntity(author, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/regenerate")
+    public ResponseEntity regenerateUserAuthToken(@PathVariable("id") Long userId) {
+        authService.regenerateAuthToken(userId);
+        return new ResponseEntity("created. Please check your email.", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/updateEmail")
+    public ResponseEntity updateNewUserEmail(@PathVariable("id") Long userId, @RequestParam(
+            "email") String newEmail) {
+        authService.updateEmail(userId, newEmail);
+        return new ResponseEntity("updated. Please verify new email.", HttpStatus.CREATED);
+    }
 }
