@@ -26,6 +26,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private Mailer mailer;
 
+    @Autowired
+    private Generator generator;
+
     @Override
     public Author registerUser(SignupDTO signupDTO) {
         User user;
@@ -36,8 +39,8 @@ public class AuthServiceImpl implements AuthService {
             user.setUsername(signupDTO.getUsername());
             UserCredentials cred = new UserCredentials();
             cred.setUser(user);
-            cred.setAuthToken(Generator.generateUserAuthToken());
-            cred.setPassword(Generator.generateUserPasswordHash(signupDTO.getPassword()));
+            cred.setAuthToken(generator.generateUserAuthToken());
+            cred.setPassword(generator.generateUserPasswordHash(signupDTO.getPassword()));
             cred.setExpireAt(TimeHelper.getUserAuthTokenExpireAt());
             user.setUserCredentials(cred); //!@@
             user.setEmail(signupDTO.getEmail());
@@ -91,16 +94,18 @@ public class AuthServiceImpl implements AuthService {
             if (user == null) {
                 return null;
             }
-            return Mapper.userToAuthor(user);
+//            return Mapper.userToAuthor(user);
         } else {
             user = userRepository.findByUsername(username);
+            if (user == null) {
+                return null;
+            }
         }
-        if (user.getUserCredentials().equals(Generator.generateUserPasswordHash(password))) {
+        if (generator.verifyPassword(password, user.getUserCredentials().getPassword())) {
             return Mapper.userToAuthor(user);
         }
         return null;
     }
-
     @Override
     public void regenerateAuthToken(Long userId) {
         User user =
@@ -108,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
                         "user", "id", userId));
         UserCredentials cred = user.getUserCredentials();
         if (!TimeHelper.isTokenValid(user.getUserCredentials().getExpireAt())) {
-            cred.setAuthToken(Generator.generateUserAuthToken());
+            cred.setAuthToken(generator.generateUserAuthToken());
             cred.setExpireAt(TimeHelper.getUserAuthTokenExpireAt());
             user.setUserCredentials(cred);
             userRepository.save(user);
@@ -143,7 +148,7 @@ public class AuthServiceImpl implements AuthService {
             user.setAuthorized(false);
         }
         user.getUserCredentials().setExpireAt(TimeHelper.getUserAuthTokenExpireAt());
-        user.getUserCredentials().setAuthToken(Generator.generateUserAuthToken());
+        user.getUserCredentials().setAuthToken(generator.generateUserAuthToken());
         userRepository.save(user);
         try {
             mailer.sendVerificationEmail(user.getEmail(),
