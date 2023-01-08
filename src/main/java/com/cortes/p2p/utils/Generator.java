@@ -16,7 +16,7 @@ public class Generator {
     private String generatedSalt;
 
     public Generator() {
-        this.generatedSalt = BCrypt.gensalt(8);;
+        this.generatedSalt = BCrypt.gensalt(8);
     }
 
     public String generateUserAuthToken() {
