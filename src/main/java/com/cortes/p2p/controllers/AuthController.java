@@ -1,5 +1,6 @@
 package com.cortes.p2p.controllers;
 
+import com.cortes.p2p.data.DTO.LoginDTO;
 import com.cortes.p2p.data.DTO.SignupDTO;
 import com.cortes.p2p.data.payload.Author;
 import com.cortes.p2p.service.AuthService;
@@ -28,9 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestParam("username") String username,
-                                    @RequestParam("password") String password) {
-        Author author = authService.loginUser(username, password);
+    public ResponseEntity loginUser(@Valid @RequestBody LoginDTO loginDTO) {
+        Author author = authService.loginUser(loginDTO);
         if (author == null) {
             return new ResponseEntity<>("Login failed", HttpStatus.BAD_REQUEST);
         }

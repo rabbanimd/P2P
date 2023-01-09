@@ -3,6 +3,7 @@ package com.cortes.p2p.service.impl;
 import com.cortes.p2p.Resolve.exceptions.InvalidUserDataException;
 import com.cortes.p2p.Resolve.exceptions.ResourceAlreadyExistException;
 import com.cortes.p2p.Resolve.exceptions.ResourceNotFoundException;
+import com.cortes.p2p.data.DTO.LoginDTO;
 import com.cortes.p2p.data.DTO.SignupDTO;
 import com.cortes.p2p.data.models.User;
 import com.cortes.p2p.data.models.UserCredentials;
@@ -87,21 +88,21 @@ public class AuthServiceImpl implements AuthService {
      * @return Author
      */
     @Override
-    public Author loginUser(String username, String password) {
+    public Author loginUser(LoginDTO loginDTO) {
         User user;
-        if (username.contains("@")) {
-            user = userRepository.findByEmail(username);
+        if (loginDTO.getUsername().contains("@")) {
+            user = userRepository.findByEmail(loginDTO.getUsername());
             if (user == null) {
                 return null;
             }
 //            return Mapper.userToAuthor(user);
         } else {
-            user = userRepository.findByUsername(username);
+            user = userRepository.findByUsername(loginDTO.getUsername());
             if (user == null) {
                 return null;
             }
         }
-        if (generator.verifyPassword(password, user.getUserCredentials().getPassword())) {
+        if (generator.verifyPassword(loginDTO.getPassword(), user.getUserCredentials().getPassword())) {
             return Mapper.userToAuthor(user);
         }
         return null;
