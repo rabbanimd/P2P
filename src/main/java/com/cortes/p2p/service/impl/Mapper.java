@@ -14,6 +14,7 @@ public class Mapper {
         Author author = new Author(user.getUserId(),
                 user.getName(),
                 user.getUsername(),
+                user.getEmail(),
                 user.isAuthorized()
         );
         author.setInterestList(user.getInterests().stream().map(interest -> interest.getName()).collect(Collectors.toList()));

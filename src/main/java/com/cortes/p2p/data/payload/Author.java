@@ -14,13 +14,15 @@ public class Author {
     private Long userId;
     private String name;
     private String username;
+    private String email;
     private boolean isAuthorized;
     private List<String> interestList = new ArrayList<>();
 
-    public Author(Long userId, String name, String username, boolean isAuthorized) {
+    public Author(Long userId, String name, String username,String email, boolean isAuthorized) {
         this.userId = userId;
         this.name = name;
         this.username = username;
+        this.email = email;
         this.isAuthorized = isAuthorized;
     }
 }
